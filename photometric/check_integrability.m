@@ -5,10 +5,12 @@ function [ p, q, SE ] = check_integrability( normals )
 %   q : df / dy
 %   SE : Squared Errors of the 2 second derivatives
 
+[h, w, ~] = size(normals);
+
 % initalization
-p = zeros(size(normals));
-q = zeros(size(normals));
-SE = zeros(size(normals));
+p = zeros([h, w]);
+q = zeros([h, w]);
+SE = zeros([h, w]);
 
 % ========================================================================
 % YOUR CODE GOES HERE
@@ -17,8 +19,10 @@ SE = zeros(size(normals));
 % q measures value of df / dy
 
 % calculate first order partial derivatives
-[p, q] = gradient(normals); % correct method?
-% p and q are 512x512x3 matrices
+% [p, q] = gradient(normals); % correct method? NO
+p = normals(:, :, 1) ./ normals(:, :, 3);
+q = normals(:, :, 2) ./ normals(:, :, 3);
+% p and q are 512x512x1 matrices
 
 % ========================================================================
 
@@ -40,8 +44,8 @@ q(isnan(q)) = 0;
 % q_p : dq / dx [ = d df/dy / dx ]
 
 % calculate second order partial derivatives
-[p_p, p_q] = gradient(p); % correct method?
-[q_p, q_q] = gradient(q); % correct method?
+[~, p_y] = gradient(p); % correct method?
+[q_x, ~] = gradient(q); % correct method?
 % p_p, p_q, q_p and q_q are 512x512x3 matrices
 
 % d df/dx / dy - d df/dy / dx   should be small at each point
@@ -50,7 +54,7 @@ q(isnan(q)) = 0;
 % check: is (p_q - q_p)^2       small at each point?
 
 % calculate the Squared Errors SE using the final formulas above
-SE = (p_q - q_p).^2;
+SE = (p_y - q_x).^2;
 treshold = 0.01; % needs to be determined
 large_values = find(SE > treshold);
 
