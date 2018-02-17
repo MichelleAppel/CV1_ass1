@@ -49,8 +49,10 @@ q(isnan(q)) = 0;
 % check: is (dp/dy - dq / dx)^2 small at each point?
 % check: is (p_q - q_p)^2       small at each point?
 
-% calculate the Squared Errors SE using the final formula above
+% calculate the Squared Errors SE using the final formulas above
 SE = (p_q - q_p).^2;
+treshold = 0.01; % needs to be determined
+large_values = find(SE > treshold);
 
 % ========================================================================
 
