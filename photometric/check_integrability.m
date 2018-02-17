@@ -16,7 +16,9 @@ SE = zeros(size(normals));
 % p measures value of df / dx
 % q measures value of df / dy
 
-[p,q] = gradient(normals); % don't know whether this is correct
+% calculate first order partial derivatives
+[p, q] = gradient(normals); % correct method?
+% p and q are 512x512x3 matrices
 
 % ========================================================================
 
@@ -29,8 +31,27 @@ q(isnan(q)) = 0;
 % and compute the Squared Errors SE of the 2 second derivatives SE
 
 % TODO
+% "Implement and compute the second derivatives according to the algorithm
+% and perform the test of integrability by choosing a reasonable threshold"
+
+% p_p : dp / dx [ = d df/dx / dx ]
+% p_q : dp / dy [ = d df/dx / dy ]
+% q_q : dq / dy [ = d df/dy / dy ]
+% q_p : dq / dx [ = d df/dy / dx ]
+
+% calculate second order partial derivatives
+[p_p, p_q] = gradient(p); % correct method?
+[q_p, q_q] = gradient(q); % correct method?
+% p_p, p_q, q_p and q_q are 512x512x3 matrices
+
+% d df/dx / dy - d df/dy / dx   should be small at each point
+% dp / dy - dq / dx             should be small at each point
+% check: is (dp/dy - dq / dx)^2 small at each point?
+% check: is (p_q - q_p)^2       small at each point?
+
+% calculate the Squared Errors SE using the final formula above
+SE = (p_q - q_p).^2;
 
 % ========================================================================
 
 end
-
