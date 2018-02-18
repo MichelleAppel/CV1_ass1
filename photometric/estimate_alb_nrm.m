@@ -51,9 +51,9 @@ for x = 1:512 % 512 (image width)
        
         % TODO: FIX ERROR FOR LINSOLVE() and MLDIVIDE():
         % "Warning: Rank deficient, rank = 0, tol =  0.000000e+00"
-        albedo(y, x, 1) = sum(g);
+        albedo(y, x, 1) = sqrt(sum(g.^2));
         if sum(g) ~= 0
-            normal(y, x, :) = g / sum(g);        
+            normal(y, x, :) = g / sqrt(sum(g.^2));        
         end
     end
 end
