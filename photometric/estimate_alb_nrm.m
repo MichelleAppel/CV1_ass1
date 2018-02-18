@@ -9,7 +9,7 @@ warning('off','all')
 %   albedo : the surface albedo
 %   normal : the surface normal
 
-[h, w, ~] = size(image_stack);
+[h, w, no_images] = size(image_stack);
 if nargin == 2
     shadow_trick = true;
 end
@@ -17,10 +17,8 @@ end
 % create arrays for 
 %   albedo (1 channel)
 %   normal (3 channels)
-albedo = zeros(h, w, 1);
-normal = zeros(h, w, 3);
-%size(albedo)        % 512x512 matrix
-%size(normal)        % 512x512x3 matrix
+albedo = zeros(h, w, 1); % 512x512 matrix
+normal = zeros(h, w, 3); % 512x512x3 matrix
 
 % =========================================================================
 % YOUR CODE GOES HERE
@@ -31,27 +29,17 @@ normal = zeros(h, w, 3);
 %   albedo at this point is |g|
 %   normal at this point is g / |g|
 
-[~, ~, no_images] = size(image_stack);
-for x = 1:512 % 512 (image width)
-    for y = 1:512 % 512 (image height)
+for x = 1:w % image width; 512 pixels
+    for y = 1:h % image height; 512 pixels
 
-        i = reshape(image_stack(x, y, :), [no_images, 1]);
-        scriptI = diag(i);
-        %size(i)        % 5x1 matrix
-        %size(scriptI)  % 5x5 matrix
-        %size(scriptV)  % 5x3 matrix
-        %g = (scriptI * i * ones(1,3)) / (scriptI * scriptV); % wrong
-
-        A = scriptI * scriptV;
-        B = scriptI * i;
-        %g = linsolve(A, B); % solves the matrix equation AX = B
-        g = mldivide(A, B); % solves the system of linear equations A*x = B
-        %size(A)        % 5x3 matrix
-        %size(B)        % 5x1 matrix
-        %size(g)        % 5x1 matrix
-       
-        % TODO: FIX ERROR FOR LINSOLVE() and MLDIVIDE():
-        % "Warning: Rank deficient, rank = 0, tol =  0.000000e+00"
+        i = reshape(image_stack(x, y, :), [no_images, 1]); % 5x1 matrix
+        scriptI = diag(i); % 5x5 matrix
+        
+        A = scriptI * scriptV; % 5x3 matrix
+        B = scriptI * i; % 5x1 matrix
+        % mldivide(A, B) solves the system of linear equations A*x = B
+        g = mldivide(A, B); % 5x1 matrix
+        
         albedo(y, x, 1) = sqrt(sum(g.^2));
         if sum(g) ~= 0
             normal(y, x, :) = g / sqrt(sum(g.^2));        
