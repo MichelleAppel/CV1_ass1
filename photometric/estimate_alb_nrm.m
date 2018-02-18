@@ -31,10 +31,11 @@ normal = zeros(h, w, 3);
 %   albedo at this point is |g|
 %   normal at this point is g / |g|
 
+[~, ~, no_images] = size(image_stack);
 for x = 1:512 % 512 (image width)
     for y = 1:512 % 512 (image height)
 
-        i = reshape(image_stack(x, y, :), [5,1]);
+        i = reshape(image_stack(x, y, :), [no_images, 1]);
         scriptI = diag(i);
         %size(i)        % 5x1 matrix
         %size(scriptI)  % 5x5 matrix
