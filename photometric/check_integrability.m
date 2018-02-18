@@ -8,9 +8,9 @@ function [ p, q, SE ] = check_integrability( normals )
 [h, w, ~] = size(normals);
 
 % initalization
-p = zeros([h, w]);
-q = zeros([h, w]);
-SE = zeros([h, w]);
+p = zeros(size(normals));
+q = zeros(size(normals));
+SE = zeros(size(normals));
 
 % ========================================================================
 % YOUR CODE GOES HERE
