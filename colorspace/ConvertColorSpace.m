@@ -26,7 +26,7 @@ elseif strcmp(colorspace, 'hsv')
 elseif strcmp(colorspace, 'ycbcr')
     new_image = rgb2ycbcr(input_image);
 elseif strcmp(colorspace, 'gray')
-    new_image = rgb2grays(input_image); % fill in this function
+    new_image = rgb2grays(input_image);
 else
 % if user inputs an unknow colorspace just notify and do not plot anything
     fprintf('Error: Unknown colorspace type [%s]...\n',colorspace);
@@ -34,6 +34,6 @@ else
     return;
 end
 
-visualize(new_image); % fill in this function
+visualize(new_image);
 
 end
