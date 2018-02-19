@@ -14,6 +14,8 @@ if nargin == 2
     shadow_trick = true;
 end
 
+scriptV
+
 % create arrays for 
 %   albedo (1 channel)
 %   normal (3 channels)
@@ -35,10 +37,14 @@ for x = 1:w % image width; 512 pixels
         i = reshape(image_stack(x, y, :), [no_images, 1]); % 5x1 matrix
         scriptI = diag(i); % 5x5 matrix
         
-        A = scriptI * scriptV; % 5x3 matrix
-        B = scriptI * i; % 5x1 matrix
         % mldivide(A, B) solves the system of linear equations A*x = B
-        g = mldivide(A, B); % 5x1 matrix
+        if shadow_trick == true
+            A = scriptI * scriptV; % 5x3 matrix
+            B = scriptI * i; % 5x1 matrix
+            g = mldivide(A, B); % 5x1 matrix
+        else
+            g = mldivide(scriptV, i); % 5x1 matrix
+        end
         
         albedo(y, x, 1) = sqrt(sum(g.^2));
         if sum(g) ~= 0
