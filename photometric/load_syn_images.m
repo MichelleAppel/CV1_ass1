@@ -21,17 +21,19 @@ for i = 1:nfiles
 
     % read input image
     im = imread(fullfile(image_dir, files(i).name));
-    im = im(:, :, channel);
+    for c = 1:channel
+        imc = im(:, :, c);
+
+        % stack at third dimension
+        if image_stack == 0
+            [h, w, d] = size(imc);
+            fprintf('Image size (HxW): %dx%d\n', h, w);
+            image_stack = zeros(h, w, channel, nfiles, 'uint8');
+            V = zeros(nfiles, 3, 'double');
+        end
     
-    % stack at third dimension
-    if image_stack == 0
-        [h, w] = size(im);
-        fprintf('Image size (HxW): %dx%d\n', h, w);
-        image_stack = zeros(h, w, nfiles, 'uint8');
-        V = zeros(nfiles, 3, 'double');
+        image_stack(:, :, c, i) = imc;
     end
-    
-    image_stack(:, :, i) = im;
     
     % read light direction from image name
     name = files(i).name(8:end);

@@ -56,8 +56,23 @@ switch path_type
         
         % =================================================================
         % YOUR CODE GOES HERE
+        for x = 1:512 % 512 (image width)
+            for y = 2:512 % 512 (image height)
+                
+                height_map(x, y) = height_map(x, y-1) + q(x, y);
+                
+            end
+        end
 
-
+        for y = 1:512 % 512 (image width)
+            for x = 2:512 % 512 (image height)
+                
+                height_map(x, y) = height_map(x-1, y) + p(x, y);
+                
+            end
+        end
+    
+        height_map(:, :) = height_map(:, :) ./ 2;
         % =================================================================
 end
 

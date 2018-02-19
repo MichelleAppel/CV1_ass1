@@ -9,12 +9,10 @@ warning('off','all')
 %   albedo : the surface albedo
 %   normal : the surface normal
 
-[h, w, no_images] = size(image_stack);
+[h, w, d, no_images] = size(image_stack);
 if nargin == 2
     shadow_trick = true;
 end
-
-scriptV
 
 % create arrays for 
 %   albedo (1 channel)
@@ -33,22 +31,24 @@ normal = zeros(h, w, 3); % 512x512x3 matrix
 
 for x = 1:w % image width; 512 pixels
     for y = 1:h % image height; 512 pixels
+        g = zeros(no_images, 1);
+        for c = 1:d
+            i = reshape(image_stack(x, y, c, :), [no_images, 1]); % 5x1 matrix
+            scriptI = diag(i); % 5x5 matrix
 
-        i = reshape(image_stack(x, y, :), [no_images, 1]); % 5x1 matrix
-        scriptI = diag(i); % 5x5 matrix
-        
-        % mldivide(A, B) solves the system of linear equations A*x = B
-        if shadow_trick == true
-            A = scriptI * scriptV; % 5x3 matrix
-            B = scriptI * i; % 5x1 matrix
-            g = mldivide(A, B); % 5x1 matrix
-        else
-            g = mldivide(scriptV, i); % 5x1 matrix
+            % mldivide(A, B) solves the system of linear equations A*x = B
+            if shadow_trick == true
+                A = scriptI * scriptV; % 5x3 matrix
+                B = scriptI * i; % 5x1 matrix
+                g = mldivide(A, B); % 5x1 matrix
+            else
+                g = g + mldivide(scriptV, i); % 5x1 matrix
+            end
         end
         
         albedo(y, x, 1) = sqrt(sum(g.^2));
         if sum(g) ~= 0
-            normal(y, x, :) = g / sqrt(sum(g.^2));        
+            normal(y, x, :) = g / sqrt(sum(g.^2));   
         end
     end
 end
