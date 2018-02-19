@@ -23,9 +23,9 @@ switch path_type
         %   height_value = previous_height_value + corresponding_q_value
         
         for x = 1:512 % 512 (image width)
-            for y = 1:512 % 512 (image height)
+            for y = 2:512 % 512 (image height)
                 
-                height_map(x, y) = height_map(x, y-1) + q;
+                height_map(x, y) = height_map(x, y-1) + q(x, y);
                 
             end
         end
@@ -42,10 +42,10 @@ switch path_type
         % =================================================================
         % YOUR CODE GOES HERE
         
-        for x = 1:512 % 512 (image width)
-            for y = 1:512 % 512 (image height)
+        for y = 1:512 % 512 (image width)
+            for x = 2:512 % 512 (image height)
                 
-                height_map(x, y) = x+y;
+                height_map(x, y) = height_map(x-1, y) + p(x, y);
                 
             end
         end
@@ -56,14 +56,14 @@ switch path_type
         
         % =================================================================
         % YOUR CODE GOES HERE
-
         for x = 1:512 % 512 (image width)
-            for y = 1:512 % 512 (image height)
+            for y = 2:512 % 512 (image height)
                 
-                height_map(x, y) = x+y;
+                height_map(x, y) = height_map(x, y-1) + q(x, y);
                 
             end
-        end        
+        end
+
         % =================================================================
 end
 
