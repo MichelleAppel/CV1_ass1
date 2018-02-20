@@ -16,6 +16,7 @@ normals_c = 0;
  for channel = 1:channels
     [image_stack, scriptV] = load_syn_images(image_dir, channel);
     
+    
     [h, w, n] = size(image_stack);
     fprintf('Finish loading %d images.\n\n', n);
     
@@ -98,10 +99,11 @@ SE_combined = SE_combined ./ channels;
 show_results(albedos_combined, normals_combined, SE_combined);
 show_model(albedos_combined, height_map_combined);
 %% Face
-[image_stack, scriptV] = load_face_images('./yaleB02/');
+[image_stack, scriptV] = load_face_images('./photometrics_images/yaleB02/');
 [h, w, n] = size(image_stack);
 fprintf('Finish loading %d images.\n\n', n);
 disp('Computing surface albedo and normal map...')
+
 [albedo, normals] = estimate_alb_nrm(image_stack, scriptV);
 
 %% integrability check: is (dp / dy  -  dq / dx) ^ 2 small everywhere?

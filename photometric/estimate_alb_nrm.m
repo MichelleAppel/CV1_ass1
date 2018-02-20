@@ -17,8 +17,8 @@ end
 % create arrays for 
 %   albedo (1 channel)
 %   normal (3 channels)
-albedo = zeros(h, w, 1); % 512x512 matrix
-normal = zeros(h, w, 3); % 512x512x3 matrix
+albedo = zeros(h, w, 1); % h x w matrix
+normal = zeros(h, w, 3); % h x w x 3 matrix
 
 % =========================================================================
 % YOUR CODE GOES HERE
@@ -29,20 +29,20 @@ normal = zeros(h, w, 3); % 512x512x3 matrix
 %   albedo at this point is |g|
 %   normal at this point is g / |g|
 
-for x = 1:w % image width; 512 pixels
-    for y = 1:h % image height; 512 pixels
+for y = 1:w % image width; 512 pixels
+    for x = 1:h % image height; 512 pixels
         g = zeros(no_images, 1);
-
-        i = reshape(image_stack(x, y, :), [no_images, 1]); % 5x1 matrix
-        scriptI = diag(i); % 5x5 matrix
+        
+        i = reshape(image_stack(x, y, :), [no_images, 1]); % no_images x 1 matrix
+        scriptI = diag(i); % no_images x no_images matrix
 
         % mldivide(A, B) solves the system of linear equations A*x = B
         if shadow_trick == true
-            A = scriptI * scriptV; % 5x3 matrix
-            B = scriptI * i; % 5x1 matrix
-            g = mldivide(A, B); % 5x1 matrix
+            A = scriptI * scriptV; % no_images x 3 matrix
+            B = scriptI * i; % no_images x 1 matrix
+            g = mldivide(A, B); % no_images x 1 matrix
         else
-            g = mldivide(scriptV, i); % 5x1 matrix
+            g = mldivide(scriptV, i); % no_images x 1 matrix
         end
 
         
