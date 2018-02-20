@@ -11,8 +11,8 @@ if nargin == 2
     path_type = 'column';
 end
 
-[h, w] = size(p);
-height_map = zeros(h, w);
+[w, h] = size(p);
+height_map = zeros(w, h);
 
 switch path_type
     case 'column'
@@ -22,10 +22,10 @@ switch path_type
         % for each pixel in the left column of height_map
         %   height_value = previous_height_value + corresponding_q_value
         
-        for x = 1:512 % 512 (image width)
-            for y = 2:512 % 512 (image height)
+        for x = 2:h % 512 (image width)
+            for y = 1:w % 512 (image height)
                 
-                height_map(x, y) = height_map(x, y-1) + q(x, y);
+                height_map(y, x) = height_map(y, x-1) + p(y, x);
                 
             end
         end
@@ -42,10 +42,10 @@ switch path_type
         % =================================================================
         % YOUR CODE GOES HERE
         
-        for y = 1:512 % 512 (image width)
-            for x = 2:512 % 512 (image height)
+        for y = 2:w % 512 (image width)
+            for x = 1:h % 512 (image height)
                 
-                height_map(x, y) = height_map(x-1, y) + p(x, y);
+                height_map(y, x) = height_map(y-1, x) + q(y, x);
                 
             end
         end
@@ -57,10 +57,10 @@ switch path_type
         % =================================================================
         % YOUR CODE GOES HERE
         height_map_column = zeros(h, w);
-        for x = 1:512 % 512 (image width)
-            for y = 2:512 % 512 (image height)
+        for x = 2:w % 512 (image width)
+            for y = 1:h % 512 (image height)
                 
-                height_map_column(x, y) = height_map_column(x, y-1) + q(x, y);
+                height_map_column(y, x) = height_map_column(y, x-1) + p(y, x);
                 
             end
         end
@@ -68,17 +68,17 @@ switch path_type
         
         
         height_map_row = zeros(h, w);
-        for y = 1:512 % 512 (image width)
-            for x = 2:512 % 512 (image height)
+        for y = 2:w % 512 (image width)
+            for x = 1:h % 512 (image height)
                 
-                height_map_row(x, y) = height_map_row(x-1, y) + p(x, y);
+                height_map_row(y, x) = height_map_row(y-1, x) + q(y, x);
                 
             end
         end
     
         
         
-        height_map(:, :) = (height_map_column(:, :) - height_map_row(:, :));
+        height_map(:, :) = (height_map_column(:, :) + height_map_row(:, :)) ./ 2;
         % =================================================================
 end
 
