@@ -56,26 +56,31 @@ switch path_type
         
         % =================================================================
         % YOUR CODE GOES HERE
+        height_map_column = zeros(h, w);
         for x = 1:512 % 512 (image width)
             for y = 2:512 % 512 (image height)
                 
-                height_map(x, y) = height_map(x, y-1) + q(x, y);
+                height_map_column(x, y) = height_map_column(x, y-1) + q(x, y);
                 
             end
         end
 
+        
+        
+        height_map_row = zeros(h, w);
         for y = 1:512 % 512 (image width)
             for x = 2:512 % 512 (image height)
                 
-                height_map(x, y) = height_map(x-1, y) + p(x, y);
+                height_map_row(x, y) = height_map_row(x-1, y) + p(x, y);
                 
             end
         end
     
-        height_map(:, :) = height_map(:, :) ./ 2;
+        
+        
+        height_map(:, :) = (height_map_column(:, :) - height_map_row(:, :));
         % =================================================================
 end
 
 
 end
-

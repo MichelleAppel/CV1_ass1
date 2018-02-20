@@ -1,4 +1,4 @@
-function [ image_stack, scriptV ] = load_syn_images( image_dir, channel )
+function [ image_stack_1, image_stack_2,, scriptV ] = load_syn_images( image_dir, channel )
 %LOAD_SYN_IMAGES read from directory image_dir all files with extension png
 %   image_dir: path to the image directory
 %   nchannel: the image channel to be loaded, default = 1
@@ -27,7 +27,7 @@ for i = 1:nfiles
     % stack at third dimension
     if image_stack == 0
         [h, w] = size(im);
-        fprintf('Image size (HxW): %dx%d\n', h, w);
+        % fprintf('Image size (HxW): %dx%d\n', h, w);
         image_stack = zeros(h, w, nfiles, 'uint8');
         V = zeros(nfiles, 3, 'double');
     end
