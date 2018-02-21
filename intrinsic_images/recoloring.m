@@ -1,5 +1,6 @@
 % Intrinsic Image Decomposition -- Recoloring
 
+% clear figures and command window
 clear
 clc
 close all
@@ -66,12 +67,16 @@ green_reconstruction = green_reflection .* shade_matrix;
 % reconstruct image with magenta reflection
 magenta_reconstruction = magenta_reflection .* shade_matrix;
 
+% save reconstructed images as .png
+%imwrite(green_reconstruction, 'ball_green.png')
+%imwrite(magenta_reconstruction, 'ball_magenta.png')
+
 % create the subplots
 figure;
 h    = [];
-h(1) = subplot(2,2,1);
-h(2) = subplot(2,2,2);
-h(3) = subplot(2,2,3);
+h(1) = subplot(2, 2, 1);
+h(2) = subplot(2, 2, 2);
+h(3) = subplot(2, 2, 3);
 
 % add images
 image(reconstruction, 'Parent', h(1));
