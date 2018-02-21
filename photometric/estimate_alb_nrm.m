@@ -29,8 +29,8 @@ normal = zeros(w, h, 3); % h x w x 3 matrix
 %   albedo at this point is |g|
 %   normal at this point is g / |g|
 
-for y = 1:h % image width; 512 pixels
-    for x = 1:w % image height; 512 pixels
+for y = 1:h % image width
+    for x = 1:w % image height
         g = zeros(no_images, 1);
         
         i = reshape(image_stack(y, x, :), [no_images, 1]); % no_images x 1 matrix
@@ -40,19 +40,17 @@ for y = 1:h % image width; 512 pixels
         if shadow_trick == true
             A = scriptI * scriptV; % no_images x 3 matrix
             B = scriptI * i; % no_images x 1 matrix
-            g = mldivide(A, B); % no_images x 1 matrix
+            g = linsolve(A, B); % no_images x 1 matrix
         else
-            g = mldivide(scriptV, i); % no_images x 1 matrix
+            g = linsolve(scriptV, i); % no_images x 1 matrix
         end
 
-        
-        albedo(y, x, 1) = sqrt(sum(g.^2));
+        albedo(x, y, 1) = sqrt(sum(g.^2));
         if sum(g) ~= 0
-            normal(y, x, :) = g / sqrt(sum(g.^2));   
+            normal(x, y, :) = g / sqrt(sum(g.^2));   
         end
     end
 end
-
 % =========================================================================
 
 end

@@ -6,7 +6,7 @@ disp('Part 1: Photometric Stereo')
 
 % obtain many images in a fixed view under different illumination
 disp('Loading images...')
-image_dir = './photometrics_images/MonkeyColor/';   % TODO: get the path of the script
+image_dir = './photometrics_images/MonkeyGray/';   % TODO: get the path of the script
 % image_ext = '*.png';
 
 channels = 3; % RGB
@@ -27,7 +27,7 @@ normals_c = 0;
     
     % compute the surface gradient from the stack of imgs and light source mat
     disp('Computing surface albedo and normal map...')
-    [albedo, normals] = estimate_alb_nrm(image_stack, scriptV);
+    [albedo, normals] = estimate_alb_nrm(image_stack, scriptV, true);
 
     albedos_c(channel, :, :) = albedo;
     normals_c(channel, :, :, :) = normals;
@@ -57,7 +57,7 @@ end
 height_map_c = zeros(channels, h, w);
 
 for channel = 1:channels
-    height_map = construct_surface( p, q, 'average');
+    height_map = construct_surface( p, q, 'column');
     height_map_c(channel, :, :) = height_map;
 end
 
@@ -86,9 +86,9 @@ for channel = 1:channels
         normals_combined = normals_combined + reshape(normals_c(channel, :, :, :), [h, w, 3]);
     end 
 
-    if ~isnan(SE_c(channel, 1, 1))
-        SE_combined = SE_combined + reshape(SE_c(channel, :, :), [h, w]);
-    end
+    %if ~isnan(SE_c(channel, 1, 1))
+    SE_combined = SE_combined + reshape(SE_c(channel, :, :), [h, w]);
+    %end
 end
 
 height_map_combined = height_map_combined ./ channels;

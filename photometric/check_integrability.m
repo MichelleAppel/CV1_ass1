@@ -19,10 +19,8 @@ SE = zeros(size(normals));
 % q measures value of df / dy
 
 % calculate first order partial derivatives
-% [p, q] = gradient(normals); % correct method? NO
 p = normals(:, :, 1) ./ normals(:, :, 3);
 q = normals(:, :, 2) ./ normals(:, :, 3);
-% p and q are 512x512x1 matrices
 
 % ========================================================================
 
@@ -55,7 +53,7 @@ q(isnan(q)) = 0;
 
 % calculate the Squared Errors SE using the final formulas above
 SE = (p_y - q_x).^2;
-treshold = 0.01; % needs to be determined
+treshold = 0.1; % needs to be determined
 large_values = find(SE > treshold);
 
 % ========================================================================
