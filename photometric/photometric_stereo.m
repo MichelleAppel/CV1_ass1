@@ -6,7 +6,7 @@ disp('Part 1: Photometric Stereo')
 
 % obtain many images in a fixed view under different illumination
 disp('Loading images...')
-image_dir = './photometrics_images/SphereColor/';   % TODO: get the path of the script
+image_dir = './photometrics_images/SphereGray25/';
 % image_ext = '*.png';
 
 channels = 3; % RGB
