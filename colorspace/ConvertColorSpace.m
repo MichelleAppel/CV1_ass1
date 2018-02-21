@@ -34,6 +34,6 @@ else
     return;
 end
 
-visualize(new_image);
+visualize(new_image, colorspace);
 
 end
