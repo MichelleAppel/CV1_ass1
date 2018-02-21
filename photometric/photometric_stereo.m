@@ -6,7 +6,7 @@ disp('Part 1: Photometric Stereo')
 
 % obtain many images in a fixed view under different illumination
 disp('Loading images...')
-image_dir = './photometrics_images/MonkeyGray/';   % TODO: get the path of the script
+image_dir = './photometrics_images/SphereColor/';   % TODO: get the path of the script
 % image_ext = '*.png';
 
 channels = 3; % RGB
@@ -27,7 +27,7 @@ normals_c = 0;
     
     % compute the surface gradient from the stack of imgs and light source mat
     disp('Computing surface albedo and normal map...')
-    [albedo, normals] = estimate_alb_nrm(image_stack, scriptV, true);
+    [albedo, normals] = estimate_alb_nrm(image_stack, scriptV, false);
 
     albedos_c(channel, :, :) = albedo;
     normals_c(channel, :, :, :) = normals;

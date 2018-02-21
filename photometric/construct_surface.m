@@ -79,7 +79,7 @@ switch path_type
     
         
         
-        height_map(:, :) = (height_map_column(:, :) + height_map_row(:, :)) ./ 2 ;
+        height_map(:, :) = (height_map_column(:, :) - height_map_row(:, :)) ./ 2 ;
         % =================================================================
 end
 
